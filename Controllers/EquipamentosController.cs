@@ -16,7 +16,6 @@ namespace sistema_de_monitoramento.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -31,6 +30,20 @@ namespace sistema_de_monitoramento.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(Get), new { id = equipamento.Id }, equipamento);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var equipamento = await _context.Equipamentos.FindAsync(id);
+
+            if (equipamento == null)
+                return NotFound("Equipamento não encontrado.");
+
+            _context.Equipamentos.Remove(equipamento);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
     }

@@ -120,3 +120,4 @@ C:\Users\aluno\Desktop\bootcamp_dtt\sistema-de-monitoramento\obj\Debug\net10.0\r
 C:\Users\aluno\Desktop\bootcamp_dtt\sistema-de-monitoramento\obj\Debug\net10.0\sistema-de-monitoramento.pdb
 C:\Users\aluno\Desktop\bootcamp_dtt\sistema-de-monitoramento\obj\Debug\net10.0\sistema-de-monitoramento.genruntimeconfig.cache
 C:\Users\aluno\Desktop\bootcamp_dtt\sistema-de-monitoramento\obj\Debug\net10.0\ref\sistema-de-monitoramento.dll
+C:\Users\aluno\Desktop\bootcamp_dtt\sistema-de-monitoramento\obj\Debug\net10.0\sistema-de-monitoramento.sourcelink.json

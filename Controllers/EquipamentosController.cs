@@ -17,28 +17,61 @@ namespace sistema_de_monitoramento.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<IEnumerable<Equipamento>>> GetEquipamentos()
         {
-            var equipamentos = await _context.Equipamentos.ToListAsync();
-            return Ok(equipamentos);
+            return await _context.Equipamentos.ToListAsync();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Equipamento equipamento)
-        {
-            _context.Equipamentos.Add(equipamento);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(Get), new { id = equipamento.Id }, equipamento);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Equipamento>> GetEquipamento(int id)
         {
             var equipamento = await _context.Equipamentos.FindAsync(id);
 
             if (equipamento == null)
-                return NotFound("Equipamento não encontrado.");
+                return NotFound();
+
+            return equipamento;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Equipamento>> PostEquipamento(Equipamento equipamento)
+        {
+            _context.Equipamentos.Add(equipamento);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetEquipamento), new { id = equipamento.Id }, equipamento);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEquipamento(int id, Equipamento equipamento)
+        {
+            if (id != equipamento.Id)
+                return BadRequest();
+
+            _context.Entry(equipamento).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EquipamentoExists(id))
+                    return NotFound();
+                else
+                    throw;
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEquipamento(int id)
+        {
+            var equipamento = await _context.Equipamentos.FindAsync(id);
+
+            if (equipamento == null)
+                return NotFound();
 
             _context.Equipamentos.Remove(equipamento);
             await _context.SaveChangesAsync();
@@ -46,5 +79,9 @@ namespace sistema_de_monitoramento.Controllers
             return NoContent();
         }
 
+        private bool EquipamentoExists(int id)
+        {
+            return _context.Equipamentos.Any(e => e.Id == id);
+        }
     }
 }

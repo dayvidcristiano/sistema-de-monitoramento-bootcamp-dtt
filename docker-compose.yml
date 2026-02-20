@@ -1,24 +1,27 @@
-version: '3.9'
+version: '3.8'
 
 services:
-  api:
-    build: .
-    container_name: sistema_api
-    ports:
-      - "8080:8080"
-    environment:
-      - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=monitoramento;Username=postgres;Password=postgres
-    depends_on:
-      - db
-
-  db:
+  sistema_postgres:
     image: postgres:15
     container_name: sistema_postgres
-    restart: always
     environment:
-      POSTGRES_DB: monitoramento
+      POSTGRES_DB: sistemamonit_dt
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  sistema_api:
+    build: .
+    container_name: sistema_api
+    depends_on:
+      - sistema_postgres
+    environment:
+      ConnectionStrings__DefaultConnection: Host=sistema_postgres;Port=5432;Database=sistemamonit_dt;Username=postgres;Password=postgres
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
